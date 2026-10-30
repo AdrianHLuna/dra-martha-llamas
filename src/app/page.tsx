@@ -7,6 +7,28 @@ import StructuredData from "@/components/StructuredData";
 import EntityCard from "@/components/EntityCard";
 import HeroOrbitMotif from "@/components/HeroOrbitMotif";
 import DoctoraliaWidget from "@/components/DoctoraliaWidget";
+import AnimatedStat from "@/components/AnimatedStat";
+import InstitutionBadge from "@/components/InstitutionBadge";
+import AmbientAccents from "@/components/AmbientAccents";
+
+// Logos reales de instituciones, descargados directamente de sus sitios
+// oficiales (uag.mx, ugto.mx/Wikimedia Commons —dominio público por ley de
+// derechos de autor mexicana para escudos—, femecog.org.mx, comegic.org.mx,
+// amec.mx) — nunca de bancos de logos de terceros sin verificar. Las que no
+// tienen entrada aquí (AMM, "Colegio de Ginecólogos y Obstetras en Chiapas",
+// "Asociación Mexicana de Endocrinología" —nombre ambiguo entre varias
+// asociaciones reales, no se pudo confirmar cuál con certeza— se quedan con
+// el sello genérico de InstitutionBadge.
+const INSTITUTION_LOGOS: Record<string, string> = {
+  "Universidad Autónoma de Guadalajara": "/institution-logos/uag.svg",
+  "Universidad de Guanajuato": "/institution-logos/ug.png",
+  "FEMECOG": "/institution-logos/femecog.png",
+  "COMEGIC": "/institution-logos/comegic.png",
+  "Colegio Mexicano de Ginecólogos dedicados a la Colposcopia": "/institution-logos/comegic.png",
+  "AMEC": "/institution-logos/amec.png",
+};
+import { iconForText } from "@/lib/contentIcons";
+import { Banknote, CreditCard, ArrowLeftRight, ShieldCheck } from "lucide-react";
 
 const PREVIEW_COUNT = 6;
 
@@ -56,16 +78,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Barra de estadísticas reales. */}
+      {/* Barra de estadísticas reales — tarjetas con ícono + anillo
+          decorativo (eco del motivo del Hero) y conteo animado al entrar en
+          viewport, en vez de solo texto sobre un fondo plano (feedback del
+          usuario, 2026-10-29). */}
       {doctor.stats && doctor.stats.length > 0 && (
-        <section className="bg-[color:var(--color-gold)] px-4 py-10">
-          <div className="mx-auto grid max-w-5xl gap-6 text-center sm:grid-cols-3">
-            {doctor.stats.map((stat) => (
-              <div key={stat.label}>
-                <p className="text-3xl font-bold text-[color:var(--color-ink)] md:text-4xl">{stat.value}</p>
-                <p className="mt-1 text-sm font-medium text-[color:var(--color-ink)]/80">{stat.label}</p>
-              </div>
-            ))}
+        <section className="bg-[color:var(--color-surface-soft)] px-4 py-14">
+          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-3">
+            {doctor.stats.map((stat) => {
+              const Icon = iconForText(stat.label);
+              return (
+                <div
+                  key={stat.label}
+                  className="relative overflow-hidden rounded-[1.75rem] border border-border bg-background p-6 text-center"
+                >
+                  <span
+                    className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full border-2 border-[color:var(--color-gold)]/40"
+                    aria-hidden="true"
+                  />
+                  <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-full bg-[color:var(--color-gold)]/25 text-[color:var(--color-primary-dark)]">
+                    <Icon size={20} aria-hidden="true" />
+                  </span>
+                  <div className="relative mt-3">
+                    <AnimatedStat value={stat.value} label={stat.label} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}
@@ -75,20 +114,11 @@ export default function Home() {
           centrado. Rompe el patrón "columna centrada max-w-5xl" del resto
           del sitio (feedback del usuario, 2026-10-29). */}
       <section aria-labelledby="about-heading" className="relative overflow-hidden bg-[color:var(--color-surface-blush)] py-20">
-        {/* Elementos decorativos flotando muy lento — vida ambiental, no una
-            sola entrada. */}
-        <span
-          className="motion-safe:animate-breathe-slow absolute left-[8%] top-10 h-3 w-3 rounded-full bg-primary/30"
-          aria-hidden="true"
-        />
-        <span
-          className="motion-safe:animate-breathe absolute right-[12%] top-1/3 h-2 w-2 rounded-full bg-[color:var(--color-secondary)]/40"
-          aria-hidden="true"
-        />
-        <span
-          className="motion-safe:animate-breathe-slow absolute bottom-12 left-[20%] h-2.5 w-2.5 rounded-full bg-[color:var(--color-gold)]/50"
-          aria-hidden="true"
-        />
+        {/* Mezcla de anillos huecos y puntos (no solo "bolitas" sólidas),
+            eco del motivo del Hero — mismo componente reutilizado en otras
+            secciones del sitio, no exclusivo de aquí (feedback del usuario,
+            2026-10-30). */}
+        <AmbientAccents variant="about" />
 
         <div className="relative mx-auto grid max-w-6xl gap-12 px-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div className="relative mx-auto aspect-square w-full max-w-xs" aria-hidden="true">
@@ -108,26 +138,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Certificaciones y Formación */}
-      <section aria-labelledby="certifications-heading" className="bg-[color:var(--color-surface-blush)] px-4 py-16">
-        <div className="mx-auto max-w-5xl">
+      {/* Certificaciones y Formación — insignia de institución (sello con
+          siglas, o logo real si algún día se entrega) en vez de una lista
+          plana de tarjetas idénticas; membresías y diplomados con
+          tratamiento ligeramente distinto para dar más cuerpo a una sección
+          que tiene mucho contenido real (feedback del usuario, 2026-10-29). */}
+      <section aria-labelledby="certifications-heading" className="relative overflow-hidden bg-[color:var(--color-surface-blush)] px-4 py-16">
+        <AmbientAccents variant="certifications" />
+        <div className="relative mx-auto max-w-5xl">
           <h2 id="certifications-heading" className="text-2xl font-bold">
             Certificaciones y Formación
           </h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+
+          <p className="mt-6 text-xs font-semibold uppercase tracking-wide text-[color:var(--color-ink-soft)]">
+            Membresías Profesionales
+          </p>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {doctor.certifications.map((cert, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-background p-5">
-                <p className="font-semibold">{cert.name}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{cert.institution}</p>
+              <div key={i} className="halo-card flex items-center gap-4 rounded-[1.5rem] border border-border bg-background p-5">
+                <InstitutionBadge institution={cert.institution} logoSrc={INSTITUTION_LOGOS[cert.institution]} />
+                <div className="min-w-0">
+                  <p className="font-semibold text-[color:var(--color-ink)]">{cert.name}</p>
+                  <p className="mt-0.5 text-sm text-[color:var(--color-ink-soft)]">{cert.institution}</p>
+                </div>
               </div>
             ))}
           </div>
-          <h3 className="mt-10 text-lg font-semibold">Educación y Diplomados</h3>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+
+          <p className="mt-10 text-xs font-semibold uppercase tracking-wide text-[color:var(--color-ink-soft)]">
+            Educación y Diplomados
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {doctor.education.map((ed, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-background p-5">
-                <p className="font-semibold">{ed.degree}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{ed.institution}</p>
+              <div key={i} className="flex items-center gap-3 rounded-2xl bg-background/60 p-4">
+                <InstitutionBadge institution={ed.institution} logoSrc={INSTITUTION_LOGOS[ed.institution]} />
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-[color:var(--color-ink)]">{ed.degree}</p>
+                  <p className="text-xs text-[color:var(--color-ink-soft)]">{ed.institution}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -136,10 +184,12 @@ export default function Home() {
 
       {/* Preview Enfermedades — grid de tarjetas (el patrón más convencional
           de los 3, a propósito, para que la variación esté en los otros
-          dos), pero con el contenedor desplazado (no centrado) sobre una
-          franja a todo el ancho del viewport. */}
+          dos), con el contenedor desplazado (no centrado) sobre una franja a
+          todo el ancho del viewport. Sin tope de ancho a la derecha — de lo
+          contrario la mitad derecha de la franja queda vacía, justo lo
+          opuesto a "aprovechar el ancho" (feedback del usuario, 2026-10-29). */}
       <section aria-labelledby="diseases-heading" className="bg-[color:var(--color-surface-soft)] py-16">
-        <div className="max-w-6xl px-4 lg:ml-[7%] lg:mr-auto lg:max-w-[62rem]">
+        <div className="max-w-6xl px-4 lg:ml-[7%] lg:mr-[4%] lg:max-w-none">
           <div className="flex items-end justify-between">
             <h2 id="diseases-heading" className="text-2xl font-bold text-[color:var(--color-ink)]">
               Enfermedades que Atendemos
@@ -232,7 +282,20 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="mt-8 flex gap-5 overflow-x-auto px-4 pb-4 [scrollbar-width:thin] snap-x snap-mandatory sm:px-[max(1rem,calc((100vw-72rem)/2))]">
+        {/*
+         * Bug real encontrado 2026-10-29: usar padding del propio contenedor
+         * para alinear el carrusel con el encabezado, combinado con
+         * snap-mandatory, hacía que el navegador calculara mal la posición
+         * inicial de scroll (scrollLeft arrancaba en ~700px en vez de 0,
+         * mostrando el carrusel ya "descuadrado" desde la carga, y al volver
+         * a la izquierda quedaba un hueco enorme antes de la primera
+         * tarjeta). Fix: usar `scroll-padding` (pensado exactamente para
+         * insets de scroll-snap, no afecta la posición inicial de scroll)
+         * en vez de `padding`, y espaciadores reales al inicio/final para el
+         * respiro visual, en vez de padding del contenedor.
+         */}
+        <div className="mt-8 flex gap-5 overflow-x-auto pb-4 [scrollbar-width:thin] snap-x snap-mandatory scroll-px-4 sm:scroll-px-[max(1rem,calc((100vw-72rem)/2))]">
+          <div className="w-0 shrink-0 sm:w-[max(0px,calc((100vw-72rem)/2))]" aria-hidden="true" />
           {symptoms.slice(0, PREVIEW_COUNT).map((symptom, i) => (
             <div key={symptom.id} className="w-[260px] shrink-0 snap-start sm:w-[300px]">
               <EntityCard
@@ -246,42 +309,86 @@ export default function Home() {
               />
             </div>
           ))}
+          <div className="w-4 shrink-0 sm:w-[max(1rem,calc((100vw-72rem)/2))]" aria-hidden="true" />
         </div>
       </section>
 
-      {/* Precio y Forma de Pago — tabla completa, la doctora dio precios reales
-          detallados por procedimiento, no solo la consulta base. */}
-      <section aria-labelledby="price-heading" className="bg-[color:var(--color-surface-blush)] px-4 py-16">
-        <div className="mx-auto max-w-4xl">
+      {/* Precio y Forma de Pago — tarjetas en vez de tabla (feedback del
+          usuario, 2026-10-29: evitar listas/tablas para casi todo), y
+          métodos de pago/seguros con la misma jerarquía visual que el
+          precio de consulta, con ícono — ya no una leyenda pequeña. */}
+      <section aria-labelledby="price-heading" className="relative overflow-hidden bg-[color:var(--color-surface-blush)] px-4 py-16">
+        <AmbientAccents variant="pricing" />
+        <div className="relative mx-auto max-w-4xl">
           <h2 id="price-heading" className="text-center text-2xl font-bold">
             Precios y Promociones
           </h2>
           <p className="mt-4 text-center text-5xl font-bold text-primary">${doctor.consultationPrice.toLocaleString("es-MX")} MXN</p>
           <p className="text-center text-sm text-[color:var(--color-ink-soft)]">Consulta general</p>
 
-          <div className="mt-10 overflow-hidden rounded-2xl border border-border bg-background">
-            <table className="w-full text-left text-sm">
-              <tbody>
-                {services
-                  .filter((s) => s.priceRange && /^\$/.test(s.priceRange))
-                  .map((s) => (
-                    <tr key={s.id} className="border-b border-border last:border-0">
-                      <td className="px-5 py-3 font-medium">{s.name}</td>
-                      <td className="px-5 py-3 text-right text-[color:var(--color-ink-soft)]">{s.priceRange}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+          <div className="mt-10 grid gap-3 sm:grid-cols-2">
+            {services
+              .filter((s) => s.priceRange && /^\$/.test(s.priceRange))
+              .map((s, i) => (
+                <div
+                  key={s.id}
+                  className="halo-card flex items-center justify-between gap-3 rounded-[1.5rem] border border-border bg-background p-4"
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <p className="truncate text-sm font-medium text-[color:var(--color-ink)]">{s.name}</p>
+                  </div>
+                  <p className="shrink-0 text-sm font-semibold text-primary">{s.priceRange}</p>
+                </div>
+              ))}
           </div>
 
-          <p className="mt-6 text-center text-sm text-[color:var(--color-ink-soft)]">
-            Métodos de pago: {doctor.paymentMethods.join(", ")}
-          </p>
-          {doctor.insurances && doctor.insurances.length > 0 && (
-            <p className="mt-1 text-center text-sm text-[color:var(--color-ink-soft)]">
-              {doctor.insurances.join(". ")}
-            </p>
-          )}
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-[1.5rem] border border-border bg-background p-5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-ink-soft)]">
+                Métodos de Pago
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {doctor.paymentMethods.map((method) => {
+                  const lower = method.toLowerCase();
+                  const Icon = lower.includes("efectivo")
+                    ? Banknote
+                    : lower.includes("tarjeta")
+                      ? CreditCard
+                      : ArrowLeftRight;
+                  return (
+                    <span
+                      key={method}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary"
+                    >
+                      <Icon size={14} aria-hidden="true" />
+                      {method}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+            {doctor.insurances && doctor.insurances.length > 0 && (
+              <div className="rounded-[1.5rem] border border-border bg-background p-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-ink-soft)]">
+                  Seguros Médicos
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {doctor.insurances.map((ins) => (
+                    <span
+                      key={ins}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[color:var(--color-secondary)]/15 px-3 py-1.5 text-xs font-semibold text-[color:var(--color-secondary)]"
+                    >
+                      <ShieldCheck size={14} aria-hidden="true" />
+                      {ins}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
@@ -300,22 +407,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA final */}
-      <section aria-labelledby="cta-heading" className="bg-primary px-4 py-16 text-center text-white">
-        <h2 id="cta-heading" className="text-2xl font-bold">
-          No dejes pasar tu salud
-        </h2>
-        <p className="mt-3 text-white/90">
-          Agenda tu valoración con {doctor.title} {doctor.name} y recibe un diagnóstico claro desde la primera consulta.
-        </p>
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-block rounded-2xl bg-white px-8 py-4 font-semibold text-primary shadow-lg transition-transform hover:scale-105"
+      {/* CTA final — motivo de anillos concéntricos de fondo (eco del Hero)
+          en vez de solo texto sobre un color plano (feedback del usuario,
+          2026-10-29, con el Hero de dra-tania-diestel como precedente de
+          "no dejar un CTA de solo texto"). */}
+      <section aria-labelledby="cta-heading" className="relative overflow-hidden bg-primary px-4 py-20 text-center text-white">
+        <svg
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[140%] w-[140%] -translate-x-1/2 -translate-y-1/2 opacity-[0.12]"
+          viewBox="0 0 400 400"
+          fill="none"
+          aria-hidden="true"
         >
-          Agendar Cita Ahora
-        </a>
+          <circle cx="200" cy="200" r="190" stroke="white" strokeWidth="1.5" />
+          <circle cx="200" cy="200" r="140" stroke="white" strokeWidth="1.5" />
+          <circle cx="200" cy="200" r="90" stroke="white" strokeWidth="1.5" />
+        </svg>
+        <AmbientAccents variant="cta" />
+        <div className="relative">
+          <h2 id="cta-heading" className="text-2xl font-bold">
+            No dejes pasar tu salud
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-white/90">
+            Agenda tu valoración con {doctor.title} {doctor.name} y recibe un diagnóstico claro desde la primera
+            consulta.
+          </p>
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 inline-block rounded-2xl bg-white px-8 py-4 font-semibold text-primary shadow-lg transition-transform hover:scale-105"
+          >
+            Agendar Cita Ahora
+          </a>
+        </div>
       </section>
     </>
   );

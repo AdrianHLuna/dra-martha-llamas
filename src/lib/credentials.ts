@@ -20,8 +20,6 @@ export function formatCredentials(doctor: DoctorProfile): string {
       `Céd Subesp: ${doctor.cedulaSubespecialidad}${doctor.cedulaSubespecialidadInstitucion ? ` (${doctor.cedulaSubespecialidadInstitucion})` : ""}`
     );
   }
-  if (doctor.cofepris) {
-    parts.push(`cofepris:${doctor.cofepris}`);
-  }
+  parts.push(`cofepris:${doctor.cofepris || "En trámite"}`);
   return parts.join(" · ");
 }

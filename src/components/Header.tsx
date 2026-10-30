@@ -60,15 +60,26 @@ export default function Header() {
           ))}
         </nav>
 
-        <Link href="/" className="flex min-w-0 shrink-0 items-center" aria-label={`${doctor.title} ${doctor.name}`}>
+        {/* Isotipo real recortado del logo completo (sin el texto, que a esta
+            altura de header se volvía ilegible) + nombre en HTML real al
+            lado — siempre legible sea cual sea el tamaño de pantalla, en
+            vez de depender de que el texto incrustado en la imagen escale
+            bien (AGENTS.md §1, "tamaño del logo", feedback 2026-10-29). */}
+        <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2.5" aria-label={`${doctor.title} ${doctor.name}`}>
           <Image
-            src="/logotipo-completo.png"
-            alt={`${doctor.title} ${doctor.name} — ${doctor.specialty}`}
-            width={300}
-            height={328}
+            src="/icon-mark.png"
+            alt=""
+            width={1387}
+            height={1050}
             priority
-            className="h-20 w-auto py-1 md:h-24"
+            className="h-12 w-auto shrink-0 md:h-14"
           />
+          <span className="hidden flex-col leading-none sm:flex">
+            <span className="font-signature text-2xl text-primary md:text-3xl">{doctor.name.split(" ").slice(0, 2).join(" ")}</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-[color:var(--color-ink-soft)]">
+              {doctor.specialty}
+            </span>
+          </span>
         </Link>
 
         <MobileMenu items={navItems} />

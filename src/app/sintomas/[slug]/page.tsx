@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { diseases, symptoms } from "@/data";
 import { generateSymptomSchemas } from "@/lib/schemas";
@@ -98,24 +97,18 @@ export default async function SymptomPage(props: PageProps<"/sintomas/[slug]">) 
             </section>
           )}
 
-          {relatedConditions.length > 0 && (
-            <section className="mt-8">
-              <h2 className="text-xl font-semibold text-[color:var(--color-ink)]">Relacionados</h2>
-              <ul className="mt-2 space-y-1">
-                {relatedConditions.map((d) => (
-                  <li key={d.id}>
-                    <Link href={`/enfermedades/${d.slug}`} className="text-primary underline">
-                      {d.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
         </article>
 
         <div className="mt-10 lg:mt-0">
-          <DetailSidebar entityName={symptom.name.toLowerCase()} verb="atiende" />
+          <DetailSidebar
+            entityName={symptom.name.toLowerCase()}
+            verb="atiende"
+            relatedItems={relatedConditions.map((d) => ({
+              label: d.name,
+              href: `/enfermedades/${d.slug}`,
+              categoryLabel: "Enfermedad" as const,
+            }))}
+          />
         </div>
       </div>
 

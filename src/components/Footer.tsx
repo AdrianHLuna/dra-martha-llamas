@@ -24,7 +24,7 @@ export default function Footer() {
   return (
     <footer className="bg-foreground text-background">
       <div className="mx-auto max-w-6xl px-4 py-12">
-        <div className="flex h-32 w-full max-w-[420px] items-center justify-center rounded-2xl bg-background p-4 md:h-40">
+        <div className="mx-auto flex h-32 w-full max-w-[420px] items-center justify-center rounded-2xl bg-background p-4 md:h-40">
           <Image
             src="/logotipo-completo.png"
             alt={`${doctor.title} ${doctor.name} — ${doctor.specialty}`}

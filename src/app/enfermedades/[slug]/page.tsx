@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { diseases, services, symptoms } from "@/data";
 import { generateDiseaseSchemas } from "@/lib/schemas";
@@ -116,28 +115,6 @@ export default async function DiseasePage(props: PageProps<"/enfermedades/[slug]
             <FaqAccordion faqs={disease.faqs} />
           </section>
 
-          {(relatedServices.length > 0 || relatedSymptoms.length > 0) && (
-            <section className="mt-8">
-              <h2 className="text-xl font-semibold text-[color:var(--color-ink)]">Relacionados</h2>
-              <ul className="mt-2 space-y-1">
-                {relatedServices.map((s) => (
-                  <li key={s.id}>
-                    <Link href={`/servicios/${s.slug}`} className="text-primary underline">
-                      {s.name}
-                    </Link>
-                  </li>
-                ))}
-                {relatedSymptoms.map((s) => (
-                  <li key={s.id}>
-                    <Link href={`/sintomas/${s.slug}`} className="text-primary underline">
-                      {s.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
           {disease.sources && disease.sources.length > 0 && (
             <section className="mt-8 text-sm text-[color:var(--color-ink-soft)]">
               <h2 className="font-semibold text-[color:var(--color-ink)]">Fuentes</h2>
@@ -151,7 +128,14 @@ export default async function DiseasePage(props: PageProps<"/enfermedades/[slug]
         </article>
 
         <div className="mt-10 lg:mt-0">
-          <DetailSidebar entityName={disease.name.toLowerCase()} verb="atiende" />
+          <DetailSidebar
+            entityName={disease.name.toLowerCase()}
+            verb="atiende"
+            relatedItems={[
+              ...relatedServices.map((s) => ({ label: s.name, href: `/servicios/${s.slug}`, categoryLabel: "Servicio" as const })),
+              ...relatedSymptoms.map((s) => ({ label: s.name, href: `/sintomas/${s.slug}`, categoryLabel: "Síntoma" as const })),
+            ]}
+          />
         </div>
       </div>
 

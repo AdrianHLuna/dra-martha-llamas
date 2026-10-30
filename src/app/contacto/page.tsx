@@ -22,7 +22,7 @@ export default function ContactoPage() {
           el bloque de reserva integrado al costado en el mismo grid, no
           como una sección aparte centrada debajo — composición distinta a
           la del resto del sitio (feedback del usuario, 2026-10-29). */}
-      <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 lg:grid-cols-[1fr_1.1fr]">
+      <div className="mx-auto grid max-w-6xl items-start gap-12 px-4 py-16 lg:grid-cols-[1fr_1.1fr]">
         <div className="relative space-y-8 border-l-2 border-[color:var(--color-border)] pl-8">
           <div className="relative">
             <span className="absolute -left-[2.45rem] flex h-6 w-6 items-center justify-center rounded-full bg-primary text-white">
