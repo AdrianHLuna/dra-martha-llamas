@@ -1,0 +1,112 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/*
+ * Paleta real de marca (PALETA DE COLORES Dra llamas_compressed.pdf, carpeta
+ * "PALETA DE COLORES/" del repo) — magenta/rosa/durazno. Es una paleta
+ * primaria + secundaria de UNA sola guía de marca (no varias combinaciones
+ * completas alternativas), así que se usa completa como la identidad visual
+ * real del sitio (AGENTS.md §5 no aplica aquí — esa regla es para cuando la
+ * guía trae "Paleta A" / "Paleta B" como combinaciones distintas a elegir).
+ * Fondo blanco dominante (precedente ya usado en Tania/Wilfredo): el durazno
+ * claro (#ffeddc) se reserva para franjas de acento, nunca como fondo
+ * general de toda la página.
+ */
+:root {
+  --color-primary: #880361; /* magenta profundo — CTAs, nav activa, categoría "Enfermedades" */
+  --color-primary-dark: #59214c; /* ciruela oscuro — hover/activo, texto enfático */
+  --color-secondary: #c582ae; /* malva — categoría "Servicios", acentos secundarios */
+  --color-peach: #f9d0a4; /* durazno — categoría "Síntomas", acentos cálidos */
+  --color-gold: #efca81; /* dorado — franja de estadísticas, detalles puntuales */
+  --color-blush: #f4c1e5; /* rosa claro — superficies suaves alternadas */
+  --color-lavender: #ddc0d8; /* lavanda pálida — bordes, estructura, nunca texto */
+  --color-surface: #ffffff;
+  --color-surface-soft: #fff8f3; /* blanco cálido, NO el durazno completo — fondo general */
+  --color-surface-blush: #fdf2f8; /* franja alterna muy suave, derivada de blush */
+  --color-ink: #2a1521; /* casi negro con tinte ciruela, texto principal */
+  --color-ink-soft: #6b5062; /* texto secundario */
+  --color-border: #ecd9e4;
+
+  --primary: var(--color-primary);
+  --primary-foreground: #ffffff;
+  --accent: var(--color-secondary);
+  --accent-foreground: #ffffff;
+  --background: var(--color-surface);
+  --foreground: var(--color-ink);
+  --muted: var(--color-surface-blush);
+  --muted-foreground: var(--color-ink-soft);
+  --border: var(--color-border);
+
+  --font-heading: var(--font-quicksand), ui-rounded, system-ui, sans-serif;
+  --font-body: var(--font-work-sans), system-ui, sans-serif;
+  --font-signature: var(--font-parisienne), cursive;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --font-sans: var(--font-body);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+.font-signature {
+  font-family: var(--font-signature);
+}
+
+/*
+ * Identidad de animación propia: "orgánica, ritmo de respiración" — el
+ * motivo del Hero (anillo orbital, sin foto) pulsa lentamente como una
+ * respiración, en vez de los fades/springs/cortes duros ya usados por otros
+ * sitios del proyecto. Respeta prefers-reduced-motion.
+ */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.035); opacity: 1; }
+}
+.animate-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@keyframes breathe-slow {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50% { transform: scale(1.06); opacity: 0.8; }
+}
+.animate-breathe-slow {
+  animation: breathe-slow 9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-breathe, .animate-breathe-slow {
+    animation: none;
+  }
+}
+
+/*
+ * EntityCard "halo": tarjetas con esquinas muy redondeadas (rounded-[2rem])
+ * y, en hover, un resplandor de color suave en vez del zoom/bounce/borde-
+ * simple ya usados por otros sitios — ritmo de grid con anchos alternados
+ * 2/1 (ver HomeCatalogGrid en page.tsx).
+ */
+.halo-card {
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.halo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px -8px color-mix(in oklab, var(--color-primary) 35%, transparent);
+}
