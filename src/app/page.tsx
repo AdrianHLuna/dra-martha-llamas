@@ -1,5 +1,6 @@
 import type { Route } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { doctor, diseases, services, symptoms } from "@/data";
 import { generateHomeSchemas } from "@/lib/schemas";
 import { formatCredentials } from "@/lib/credentials";
@@ -235,17 +236,29 @@ export default function Home() {
                 href={`/servicios/${services[0].slug}` as Route}
                 className="halo-card group relative flex flex-col justify-end overflow-hidden rounded-[2rem] border border-border bg-background p-8 min-h-[22rem]"
               >
-                <span className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--color-secondary)] text-sm font-bold text-white">
-                  01
-                </span>
-                <span className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-secondary)]">
-                  Servicio destacado
-                </span>
-                <h3 className="mt-2 text-2xl font-bold text-[color:var(--color-ink)]">{services[0].name}</h3>
-                <p className="mt-2 text-sm text-[color:var(--color-ink-soft)]">{services[0].description}</p>
-                <span className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-                  Ver ficha del procedimiento →
-                </span>
+                {services[0].image && (
+                  <Image
+                    src={services[0].image}
+                    alt={services[0].name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 1024px) 100vw, 60vw"
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/85 to-background/30" />
+                <div className="relative z-10">
+                  <span className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[color:var(--color-secondary)] text-sm font-bold text-white shadow-sm">
+                    01
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[color:var(--color-secondary)]">
+                    Servicio destacado
+                  </p>
+                  <h3 className="mt-2 text-2xl font-bold text-[color:var(--color-ink)]">{services[0].name}</h3>
+                  <p className="mt-2 text-sm text-[color:var(--color-ink-soft)]">{services[0].description}</p>
+                  <span className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
+                    Ver ficha del procedimiento →
+                  </span>
+                </div>
               </Link>
             )}
             <div className="flex flex-col gap-4">
@@ -253,15 +266,24 @@ export default function Home() {
                 <Link
                   key={service.id}
                   href={`/servicios/${service.slug}` as Route}
-                  className="halo-card flex items-center gap-4 rounded-[1.5rem] border border-border bg-background p-4"
+                  className="halo-card group flex items-center gap-4 rounded-[1.5rem] border border-border bg-background p-3 sm:p-4"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-secondary)]/15 text-xs font-bold text-[color:var(--color-secondary)]">
-                    {String(i + 2).padStart(2, "0")}
-                  </span>
-                  <div className="min-w-0">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-muted">
+                    <Image
+                      src={service.image}
+                      alt={service.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="56px"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold text-[color:var(--color-ink)]">{service.name}</p>
                     <p className="truncate text-xs text-[color:var(--color-ink-soft)]">{service.description}</p>
                   </div>
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-secondary)]/15 text-xs font-bold text-[color:var(--color-secondary)]">
+                    {String(i + 2).padStart(2, "0")}
+                  </span>
                 </Link>
               ))}
             </div>

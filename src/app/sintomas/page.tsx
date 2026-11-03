@@ -20,7 +20,7 @@ export default function SintomasPage() {
       <div className="grid gap-6 pb-16 sm:grid-cols-2 lg:grid-cols-3">
         {symptoms.map((symptom) => (
           <article key={symptom.id} className="overflow-hidden rounded-2xl border border-border bg-background">
-            <CardImageHeader alt={symptom.name} />
+            <CardImageHeader src={symptom.image} alt={symptom.name} aspect="16/10" />
             <div className="p-5">
               <h2 className="font-semibold">{symptom.name}</h2>
               <p className="mt-2 text-sm text-muted-foreground">{symptom.description.slice(0, 120)}...</p>
