@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="es-MX"
       className={`${quicksand.variable} ${workSans.variable} ${parisienne.variable}`}
     >
-      <body className="pb-16 md:pb-0">
+      <body className="overflow-x-hidden w-full pb-16 md:pb-0">
         <GoogleAnalytics />
         <Header />
         {children}

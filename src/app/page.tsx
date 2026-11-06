@@ -11,6 +11,7 @@ import DoctoraliaWidget from "@/components/DoctoraliaWidget";
 import AnimatedStat from "@/components/AnimatedStat";
 import InstitutionBadge from "@/components/InstitutionBadge";
 import AmbientAccents from "@/components/AmbientAccents";
+import SymptomsCarousel from "@/components/SymptomsCarousel";
 
 // Logos reales de instituciones, descargados directamente de sus sitios
 // oficiales (uag.mx, ugto.mx/Wikimedia Commons —dominio público por ley de
@@ -93,7 +94,7 @@ export default function Home() {
             </div>
 
             {/* Badge flotante de experiencia clínica */}
-            <div className="absolute -bottom-4 -left-3 rounded-2xl border border-border bg-background/95 p-3.5 shadow-xl backdrop-blur-sm sm:-left-6 sm:bottom-6">
+            <div className="absolute -bottom-4 left-2 rounded-2xl border border-border bg-background/95 p-3.5 shadow-xl backdrop-blur-sm sm:-left-6 sm:bottom-6">
               <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Atención médica especializada</p>
               <p className="text-sm font-bold text-[color:var(--color-ink)]">+19 años de experiencia</p>
             </div>
@@ -220,13 +221,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Preview Enfermedades — grid de tarjetas (el patrón más convencional
-          de los 3, a propósito, para que la variación esté en los otros
-          dos), con el contenedor desplazado (no centrado) sobre una franja a
-          todo el ancho del viewport. Sin tope de ancho a la derecha — de lo
-          contrario la mitad derecha de la franja queda vacía, justo lo
-          opuesto a "aprovechar el ancho" (feedback del usuario, 2026-10-29). */}
-      <section aria-labelledby="diseases-heading" className="bg-[color:var(--color-surface-soft)] py-16">
+      {/* Preview Enfermedades — grid de tarjetas */}
+      <section aria-labelledby="diseases-heading" className="overflow-hidden bg-[color:var(--color-surface-soft)] py-16">
         <div className="max-w-6xl px-4 lg:ml-[7%] lg:mr-[4%] lg:max-w-none">
           <div className="flex items-end justify-between">
             <h2 id="diseases-heading" className="text-2xl font-bold text-[color:var(--color-ink)]">
@@ -253,11 +249,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Preview Servicios — composición "destacado + secundarios": una
-          tarjeta grande con el primer servicio (el que la doctora enfatizó
-          más al dar el catálogo) y el resto en una columna angosta al lado,
-          en vez de un grid uniforme. */}
-      <section aria-labelledby="services-heading" className="bg-[color:var(--color-surface-blush)] px-4 py-16">
+      {/* Preview Servicios — composición "destacado + secundarios" */}
+      <section aria-labelledby="services-heading" className="relative overflow-hidden bg-[color:var(--color-surface-blush)] px-4 py-16">
         <div className="mx-auto max-w-6xl">
           <div className="flex items-end justify-between">
             <h2 id="services-heading" className="text-2xl font-bold text-[color:var(--color-ink)]">
@@ -267,11 +260,11 @@ export default function Home() {
               Ver todos
             </Link>
           </div>
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <div className="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr] min-w-0">
             {services[0] && (
               <Link
                 href={`/servicios/${services[0].slug}` as Route}
-                className="halo-card group relative flex flex-col justify-end overflow-hidden rounded-[2rem] border border-border bg-background p-8 min-h-[22rem]"
+                className="halo-card group relative flex flex-col justify-end overflow-hidden rounded-[2rem] border border-border bg-background p-6 sm:p-8 min-h-[20rem] sm:min-h-[22rem]"
               >
                 {services[0].image && (
                   <Image
@@ -298,12 +291,12 @@ export default function Home() {
                 </div>
               </Link>
             )}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 min-w-0">
               {services.slice(1, PREVIEW_COUNT).map((service, i) => (
                 <Link
                   key={service.id}
                   href={`/servicios/${service.slug}` as Route}
-                  className="halo-card group flex items-center gap-4 rounded-[1.5rem] border border-border bg-background p-3 sm:p-4"
+                  className="halo-card group flex items-center gap-3 sm:gap-4 rounded-[1.5rem] border border-border bg-background p-3 sm:p-4 min-w-0 overflow-hidden"
                 >
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-muted">
                     <Image
@@ -315,8 +308,8 @@ export default function Home() {
                     />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-[color:var(--color-ink)]">{service.name}</p>
-                    <p className="truncate text-xs text-[color:var(--color-ink-soft)]">{service.description}</p>
+                    <p className="truncate font-semibold text-[color:var(--color-ink)] text-sm sm:text-base">{service.name}</p>
+                    <p className="line-clamp-2 text-xs text-[color:var(--color-ink-soft)]">{service.description}</p>
                   </div>
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-secondary)]/15 text-xs font-bold text-[color:var(--color-secondary)]">
                     {String(i + 2).padStart(2, "0")}
@@ -328,9 +321,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Preview Síntomas — carrusel horizontal con scroll-snap (válido en
-          Home por AGENTS.md §2, "solo como preview"). */}
-      <section aria-labelledby="symptoms-heading" className="py-16">
+      {/* Preview Síntomas — Carrusel interactivo */}
+      <section aria-labelledby="symptoms-heading" className="relative overflow-hidden py-16">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex items-end justify-between">
             <h2 id="symptoms-heading" className="text-2xl font-bold text-[color:var(--color-ink)]">
@@ -340,35 +332,9 @@ export default function Home() {
               Ver todos
             </Link>
           </div>
-        </div>
-        {/*
-         * Bug real encontrado 2026-10-29: usar padding del propio contenedor
-         * para alinear el carrusel con el encabezado, combinado con
-         * snap-mandatory, hacía que el navegador calculara mal la posición
-         * inicial de scroll (scrollLeft arrancaba en ~700px en vez de 0,
-         * mostrando el carrusel ya "descuadrado" desde la carga, y al volver
-         * a la izquierda quedaba un hueco enorme antes de la primera
-         * tarjeta). Fix: usar `scroll-padding` (pensado exactamente para
-         * insets de scroll-snap, no afecta la posición inicial de scroll)
-         * en vez de `padding`, y espaciadores reales al inicio/final para el
-         * respiro visual, en vez de padding del contenedor.
-         */}
-        <div className="mt-8 flex gap-5 overflow-x-auto pb-4 [scrollbar-width:thin] snap-x snap-mandatory scroll-px-4 sm:scroll-px-[max(1rem,calc((100vw-72rem)/2))]">
-          <div className="w-0 shrink-0 sm:w-[max(0px,calc((100vw-72rem)/2))]" aria-hidden="true" />
-          {symptoms.slice(0, PREVIEW_COUNT).map((symptom, i) => (
-            <div key={symptom.id} className="w-[260px] shrink-0 snap-start sm:w-[300px]">
-              <EntityCard
-                href={`/sintomas/${symptom.slug}` as Route}
-                index={i}
-                name={symptom.name}
-                excerpt={`${symptom.description.slice(0, 90)}...`}
-                image={symptom.image}
-                categoryLabel="Síntoma"
-                ctaLabel="Ver orientación médica"
-              />
-            </div>
-          ))}
-          <div className="w-4 shrink-0 sm:w-[max(1rem,calc((100vw-72rem)/2))]" aria-hidden="true" />
+          <div className="mt-8">
+            <SymptomsCarousel symptoms={symptoms} />
+          </div>
         </div>
       </section>
 
