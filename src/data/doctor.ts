@@ -65,12 +65,12 @@ export const doctor: DoctorProfile = {
   education: [
     { degree: "Médico Cirujano", institution: "Universidad Autónoma de Guadalajara" },
     { degree: "Especialidad en Ginecología y Obstetricia", institution: "Universidad de Guanajuato" },
-    { degree: "Diplomado en Endocrinología Ginecológica", institution: "Universidad Autónoma de Guadalajara" },
-    { degree: "Diplomado en Alta Especialidad en Láser en Tracto Genital Inferior y Rejuvenecimiento", institution: "Universidad Autónoma de Guadalajara" },
-    { degree: "Reconocimiento en curso de Infertilidad Básico/Avanzado", institution: "Universidad Autónoma de Guadalajara" },
+    { degree: "Diplomado en Endocrinología Ginecológica", institution: "Universidad de las Américas Puebla" },
+    { degree: "Diplomado en Alta Especialidad en Láser en Tracto Genital Inferior y Rejuvenecimiento", institution: "Universidad Autónoma del Estado de México" },
+    { degree: "Diplomado en Alta Especialidad en Ginecología Estética Avanzada", institution: "Universidad Autónoma del Estado de México" },
+    { degree: "Reconocimiento en curso de Infertilidad Básico/Avanzado", institution: "Instituto Vida CDMX de Ciencias en Reproducción Humana" },
     { degree: "Diplomado en Colposcopia y Patología del Tracto Genital Inferior", institution: "Colegio Mexicano de Ginecólogos dedicados a la Colposcopia" },
     { degree: "Diplomado en Colposcopia Avanzada", institution: "Colegio Mexicano de Ginecólogos dedicados a la Colposcopia" },
-    { degree: "Diplomado en Alta Especialidad en Ginecología Estética Avanzada", institution: "Universidad Autónoma de Guadalajara" },
   ],
   sameAs: [],
 };
