@@ -44,7 +44,7 @@ export const doctor: DoctorProfile = {
   schedule: "Lunes a viernes 10:30am-1:30pm y 4pm-7:30pm · Sábados 10:00am-1:30pm",
   openingHours: ["Mo-Fr 10:30-13:30", "Mo-Fr 16:00-19:30", "Sa 10:00-13:30"],
   acceptingNewPatients: true,
-  photo: "/doctor-photo.jpg",
+  photo: "/aboutme.jpg",
   bio: "La Dra. Martha Hayde Llamas Rangel es ginecóloga y obstetra con 19 años de experiencia, más de 75,000 pacientes atendidas y más de 2,500 procedimientos y cirugías realizadas. Atiende en Alpha Medical Center, Tuxtla Gutiérrez, Chiapas, con un enfoque integral en salud ginecológica, control prenatal, colposcopia y climaterio.",
   philosophy:
     "Acompañar a cada paciente con escucha real y un diagnóstico preciso, en cada etapa de su salud ginecológica y obstétrica.",

@@ -73,8 +73,30 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <div className="relative mx-auto aspect-square w-full max-w-sm" aria-hidden="true">
-            <HeroOrbitMotif />
+          <div className="relative mx-auto w-full max-w-md">
+            {/* Halo decorativo de anillos concéntricos que respiran */}
+            <div className="pointer-events-none absolute -inset-6 flex items-center justify-center opacity-40" aria-hidden="true">
+              <HeroOrbitMotif />
+            </div>
+
+            {/* Fotografía del Hero con marco refinado */}
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2.5rem] border-4 border-white/80 bg-gradient-to-b from-primary/10 to-primary/5 shadow-2xl">
+              <Image
+                src="/hero.jpg"
+                alt={`${doctor.title} ${doctor.name} - ${doctor.specialistTitle} en ${doctor.city}`}
+                fill
+                priority
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 90vw, 450px"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+            </div>
+
+            {/* Badge flotante de experiencia clínica */}
+            <div className="absolute -bottom-4 -left-3 rounded-2xl border border-border bg-background/95 p-3.5 shadow-xl backdrop-blur-sm sm:-left-6 sm:bottom-6">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Atención médica especializada</p>
+              <p className="text-sm font-bold text-[color:var(--color-ink)]">+19 años de experiencia</p>
+            </div>
           </div>
         </div>
       </section>
@@ -122,19 +144,34 @@ export default function Home() {
         <AmbientAccents variant="about" />
 
         <div className="relative mx-auto grid max-w-6xl gap-12 px-4 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          <div className="relative mx-auto aspect-square w-full max-w-xs" aria-hidden="true">
-            <div className="motion-safe:animate-breathe-slow absolute inset-0 rounded-full border-2 border-primary/25" />
-            <div className="absolute inset-6 rounded-full border border-[color:var(--color-secondary)]/30" />
-            <div className="absolute inset-0 flex items-center justify-center p-10 text-center">
-              <p className="text-lg font-medium italic leading-snug text-primary">“{doctor.philosophy}”</p>
+          <div className="relative mx-auto w-full max-w-sm">
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[2.5rem] border-4 border-white/80 bg-gradient-to-b from-primary/10 to-primary/5 shadow-xl">
+              <Image
+                src="/aboutme.jpg"
+                alt={`Dra. ${doctor.name} - ${doctor.specialistTitle}`}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 90vw, 380px"
+              />
             </div>
+            {/* Halo decorativo orgánico */}
+            <div
+              className="pointer-events-none absolute -bottom-5 -right-5 h-28 w-28 rounded-full border-2 border-primary/20 motion-safe:animate-breathe-slow"
+              aria-hidden="true"
+            />
           </div>
           <div>
-            <h2 id="about-heading" className="text-2xl font-bold text-[color:var(--color-ink)]">
+            <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+              Conoce a tu especialista
+            </span>
+            <h2 id="about-heading" className="mt-2 text-2xl font-bold text-[color:var(--color-ink)] md:text-3xl">
               Sobre {doctor.title} {doctor.name}
             </h2>
-            <p className="mt-4 text-[color:var(--color-ink-soft)]">{doctor.bio}</p>
-            <p className="mt-4 text-xs text-[color:var(--color-ink-soft)]">{formatCredentials(doctor)}</p>
+            <p className="mt-4 text-base leading-relaxed text-[color:var(--color-ink-soft)]">{doctor.bio}</p>
+            <blockquote className="mt-6 rounded-2xl border-l-4 border-primary bg-background/60 p-4 italic text-primary">
+              “{doctor.philosophy}”
+            </blockquote>
+            <p className="mt-4 text-xs font-medium text-[color:var(--color-ink-soft)]">{formatCredentials(doctor)}</p>
           </div>
         </div>
       </section>
